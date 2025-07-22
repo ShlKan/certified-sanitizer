@@ -1,0 +1,4 @@
+(executable
+ (public_name certified_sanitizer)
+ (name main)
+ (libraries Transducer))

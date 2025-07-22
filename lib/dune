@@ -1,0 +1,8 @@
+(library
+ (name Transducer)
+ (libraries zarith))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))
