@@ -63,6 +63,11 @@ let nfa_destruct nfa =
     (equal_Z, linorder_Z_list)
     nfa
 
+let nfa_destruct_init nfa =
+  Automata_lib.rs_nfa_destruct
+    (nFA_states_nat, linorder_nat)
+    (equal_Z, linorder_Z) nfa
+
 let nfa_construct_reachable nfa =
   Automata_lib.rs_nfa_construct_reachable
     (nFA_states_nat, linorder_nat)
@@ -113,7 +118,7 @@ let rec print_tran l =
       Format.printf ", " ;
       List.iter
         (fun (l, r) ->
-          Format.printf "[%a, %a]"
+          Format.printf "[(%a); (%a)]"
             (Format.pp_print_list
                ~pp_sep:(fun fmt () -> Format.fprintf fmt ", ")
                Format.pp_print_int )
@@ -135,7 +140,9 @@ let rec print_tran_str l =
       Format.printf "(" ;
       Format.printf "%d" (Z.to_int (Automata_lib.integer_of_nat a)) ;
       Format.printf ", " ;
-      List.iter (fun (l, r) -> Format.printf "[%s, %s]" l r) l ;
+      List.iter
+        (fun (l, r) -> Format.printf "[%d, %d]" (Z.to_int l) (Z.to_int r))
+        l ;
       Format.printf ", " ;
       Format.printf "%d" (Z.to_int (Automata_lib.integer_of_nat c)) ;
       Format.printf ")" ;
