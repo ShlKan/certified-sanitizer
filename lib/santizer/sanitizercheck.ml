@@ -21,16 +21,22 @@ let translate_automata_to_int (q, (t, (i, f))) =
 
 (* By default we use any input string from Unicode *)
 let santizer_check (* a list of transducers of sanitizer *) santizers
-    (* an NFA contains unsafe strings. *) attach_model =
-  List.fold_left
-    (fun acc santizer ->
-      let nfa = nft_product_str santizer acc fmap fe in
-      let elim_nfa = nfa_elim_str nfa in
-      let norm_nfa = nfa_normal_str elim_nfa in
-      let destruct_nfa = nfa_destruct_str norm_nfa in
-      let tran_nfa = transform_nfa_string_to_char destruct_nfa in
-      nfa_construct_reachable
-        (nfa_construct (translate_automata_to_int tran_nfa)) )
-    universial_nfa santizers
-
-let nft = nft_product_str
+    (* an NFA contains unsafe strings. *) attack_model =
+  let result_NFA =
+    List.fold_left
+      (fun acc santizer ->
+        let nfa = nft_product_str santizer acc fmap fe in
+        let elim_nfa = nfa_elim_str nfa in
+        let norm_nfa = nfa_normal_str elim_nfa in
+        let destruct_nfa = nfa_destruct_str norm_nfa in
+        let tran_nfa = transform_nfa_string_to_char destruct_nfa in
+        nfa_construct_reachable
+          (nfa_construct (translate_automata_to_int tran_nfa)) )
+      universial_nfa santizers
+  in
+  let product_NFA = nfa_product result_NFA attack_model in
+  print_auto_str (nfa_destruct_init product_NFA) ;
+  let _, (_, (_, final)) = nfa_destruct_init product_NFA in
+  match final with
+  | [] -> Format.printf "Safe\n"
+  | _ -> Format.printf "Unsafe\n"

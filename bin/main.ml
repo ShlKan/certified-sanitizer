@@ -1,7 +1,8 @@
-open Transducer
-open ITransducer
 open Sanitizer
-open Htmlescape
+open Sanitizercheck
+open Hescapestring
+open Attackmodel
+open Addslash
 
 (* open Addslash *)
 
@@ -77,16 +78,14 @@ let _compute_accepting_path
    character transitions:\n" ; let transformed = transform_nfa_string_to_char
    test_nfa in print_auto_str transformed ; Format.printf "\n" *)
 
+(* let main () = let string_nfa = nfa_construct_reachable (nfa_construct
+   ([0], [(0, [(0x21, 0x21)], 0)], [0], [0])) in let sanitizer_nfa =
+   nft_sanitizer () in let product_nfa = nft_product_str sanitizer_nfa
+   string_nfa fmap fe in let nfa = nfa_destruct_str (nfa_normal_str
+   (nfa_elim_str product_nfa)) in print_auto_str_label nfa ; let nfa_ =
+   transform_nfa_string_to_char nfa in print_auto_str nfa_*)
+
 let main () =
-  let string_nfa =
-    nfa_construct_reachable
-      (nfa_construct ([0], [(0, [(0x21, 0x21)], 0)], [0], [0]))
-  in
-  let sanitizer_nfa = nft_sanitizer () in
-  let product_nfa = nft_product_str sanitizer_nfa string_nfa fmap fe in
-  let nfa = nfa_destruct_str (nfa_normal_str (nfa_elim_str product_nfa)) in
-  print_auto_str_label nfa ;
-  let nfa_ = transform_nfa_string_to_char nfa in
-  print_auto_str nfa_
+  santizer_check [nft_addslashes (); nft_escapeString ()] attack_html_attr
 
 let () = main ()

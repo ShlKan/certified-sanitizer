@@ -47,6 +47,13 @@ let nft_product_str nft =
     (equal_Z, linorder_str_list)
     nft
 
+let nfa_product nfa1 nfa2 =
+  Automata_lib.rs_nfa_bool_comb
+    (nFA_states_nat, linorder_nat)
+    (equal_Z, linorder_Z)
+    (fun b1 b2 -> b1 && b2)
+    nfa1 nfa2
+
 let nfa_normal nfa =
   Automata_lib.rs_nfa_normal
     (nFA_states_nat, linorder_nat)
