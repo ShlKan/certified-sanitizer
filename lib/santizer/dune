@@ -1,0 +1,8 @@
+(library
+ (name Sanitizer)
+ (libraries zarith Transducer))
+
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))

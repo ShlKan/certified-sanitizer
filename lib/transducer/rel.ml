@@ -69,3 +69,10 @@ let order_string =
 
 let linorder_str =
   ({order_linorder= order_str} : string Automata_lib.linorder)
+
+let linorder_str_list = Automata_lib.linorder_list (equal_str, linorder_str)
+
+let eq_str_list l1 l2 =
+  List.length l1 = List.length l2 && List.for_all2 eq_str l1 l2
+
+let equal_str_list = {Automata_lib.equal= eq_str_list}
